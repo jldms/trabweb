@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { apiAuthenticated } from '../../services/api';
-import { baseURL } from '../../services/api_omdb';
+import { baseURL_text, baseURL_image } from '../../services/api_omdb';
 
 const Home = () => {
 
+  const image = []
   const [search, setSearch] = useState('');
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -19,20 +20,22 @@ const Home = () => {
   const handleSearch = async () => {
 
     if (search) {
+
       try {
         await axios
-          .get(`${baseURL}s=${search}&page=${page}`)
+          .get(`${baseURL_text}s=${search}&page=${page}`)
           .then((response) => {
-            console.log(response.data.Search);
             setMovies(response.data.Search)
           });
       }
       catch (error) {
         console.log(error.response.status);
       }
+
     }
 
   }
+
 
   const addFavorite = async (id) => {
     try {
@@ -49,37 +52,31 @@ const Home = () => {
     }
   }
 
+  const addReview = async (imdbID, text, stars) => {
+    try {
+      await apiAuthenticated
+        .post(`/reviews/${imdbID}`, {
+          comment: text,
+          stars: stars
+        })
+        .then((response) => {
+          console.log(response)
+        });
+    }
+    catch (error) {
+      console.log(error.response.status);
+    }
+  }
+
   useEffect(() => {
     handleSearch()
   }, [page])
 
   return (
     <>
-      <form>
-        <label>digite um filme:
-          <input type="text" placeholder="Digite um filme aqui" onChange={(e) => { setSearch(e.target.value) }} />
-        </label>
-      </form>
-
-      <button onClick={() => { handleSearch() }} >
-        buscar
-      </button>
-
-      {movies.map((movie) => {
-        return (
-
-          <div key={movie.imdbID}>
-            {movie.Title}
-            <button onClick={() => { addFavorite(movie.imdbID) }} >
-              favoritar
-            </button>
-
-          </div>
 
 
-        )
-      })
-      }
+
 
       <button onClick={() => { setPage(page + 1) }} >
         proximo
@@ -118,9 +115,51 @@ const Home = () => {
           </div>
         </nav>
 
-        <h1 class="title is-3">Buscar Filme:</h1>
+        <h1 class="subtitle is-3">Buscar Filme:</h1>
 
-        <input class="input is-primary" type="text" placeholder="Digite aqui um filme"></input>
+        <input class="input is-primary" type="text" placeholder="Digite aqui um filme" onChange={(e) => { setSearch(e.target.value) }}></input>
+
+        <button className="button is-success" onClick={() => { handleSearch() }}>Buscar</button>
+
+        
+
+        {movies.length > 0 ?
+          movies.map((movie) => {
+              
+            return (
+
+              <div class="card" key={movie.imdbID}>
+
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-128x128">
+                      <img src={`https://img.omdbapi.com/?apikey=90b0aa9a&i=${movie.imdbID}`} alt="Placeholder image" />
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <p class="title is-4">{movie.Title}</p>
+                  </div>
+                </div>
+
+
+                <footer class="card-footer">
+                  <a href="#" class="card-footer-item" onClick={() => { addFavorite(movie.imdbID) }}>Adicionar aos favoritos</a>
+                  <a href="#" class="card-footer-item" onClick={() => { addReview(movie.imdbID) }}>Fazer review</a>
+                  <a href="#" class="card-footer-item" onClick={() => { navigate('/detailreview') }}>Ver review</a>
+
+                </footer>
+              </div>
+
+            )
+          })
+          :
+          <h1 class="subtitle is-1">Faça uma busca para começar</h1>
+          
+
+
+        }
+
+
       </div>
     </>
 

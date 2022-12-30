@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import Signup from './pages/SignUp';
 import Home from './pages/Home';
 import Review from './pages/Review';
+import DetailReview from './pages/DetailReview';
 import Favorite from './pages/Favorite';
 import PrivateRoutes from './utils/PrivateRoutes';
 
@@ -24,6 +25,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route element={<Home />} path="/" />
             <Route element={<Review />} path="/review" />
+            <Route element={<DetailReview />} path="/detailreview" />
             <Route element={<Favorite />} path="/favorite" />
           </Route>
         </Routes>
