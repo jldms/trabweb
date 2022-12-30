@@ -7,55 +7,73 @@ import { apiAuthenticated } from '../../services/api';
 
 const Favorite = () => {
 
-  const {logout} = useContext(AuthContext);
+    const { logout } = useContext(AuthContext);
 
-  const [favorites, setFavorites] = useState([])
+    const [favorites, setFavorites] = useState([])
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const getFavorites = async () => {
+    useEffect(() => {
+        const getFavorites = async () => {
 
+            try {
+                await apiAuthenticated
+                    .get('/favorites')
+                    .then((response) => {
+                        console.log(response.data.favorites);
+                        setFavorites(response.data.favorites)
+                    });
+            }
+            catch (error) {
+                console.log(error.response.status);
+            }
+        };
+        getFavorites();
+    }, []);
+
+    const delFavorite = async (id) => {
         try {
-          await apiAuthenticated
-            .get('/favorites')
-            .then((response) => {
-              console.log(response.data.favorites);
-              setFavorites(response.data.favorites)
-            });
+            await apiAuthenticated
+                .delete(`/favorites/${id}`)
+                    .then((response) => {
+                        console.log(response)
+                    });
         }
         catch (error) {
-          console.log(error.response.status);
+            console.log(error.response.status);
         }
-      };
-      getFavorites();
-  }, []);
-  
-  return (
-    <>
-      <p>favorites</p>
+    }
 
-      <button onClick={() => { logout()} } >
-        logout
-      </button>
+    return (
+        <>
+            <p>Página dos Favoritos</p>
 
-      <button onClick={() => { navigate('/')} } >
-        voltar
-      </button>
+            <button onClick={() => { logout() }} >
+                logout
+            </button>
 
-      <p>meus favoritos:</p>
+            <button onClick={() => { navigate('/') }} >
+                voltar
+            </button>
 
-      {favorites.length > 0?
-        favorites.map((favorite) => {
-            return(
-                <div  key={favorite.imdbID}>{favorite.imdbID}</div>
-            )
-        })
-        :
-        <p>não há favoritos</p>
-      }
-    </>
-  );
+            <p>meus favoritos:</p>
+
+            {favorites.length > 0 ?
+                favorites.map((favorite) => {
+                    return (
+                        <div key={favorite.imdbID}>
+                            {favorite.imdbID}
+                            <button onClick={() => { delFavorite(favorite.imdbID) }} >
+                                remover dos favoritos
+                            </button>
+                        </div>
+                    )
+                })
+                :
+                <p>não há favoritos</p>
+            }
+        </>
+    );
 }
 
 export default Favorite;
