@@ -28,35 +28,57 @@ const Review = () => {
                 console.log(error.response.status);
             }
         };
+
+
+
+
         getMyReview();
     }, []);
 
     return (
         <>
-            <p>Tela de reviews</p>
+            <div className="container is-widescreen">
 
-            <button onClick={() => { logout() }} >
-                logout
-            </button>
+                <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
 
-            <button onClick={() => { navigate('/') }} >
-                voltar
-            </button>
+                    <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" onClick={() => { navigate('/') }}>
+                                Voltar
+                            </a>
 
-            {review.length > 0 ?
-                review.map((review) => {
-                    return (
-                        <div key={review.imdbID}>
-                            {review.imdbID}
-                            <button onClick={() => { delReview(review.imdbID) }} >
-                                remover dos favoritos
-                            </button>
                         </div>
-                    )
-                })
-                :
-                <p>você não possui reviews</p>
-            }
+
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a class="button is-primary" onClick={() => { logout() }}>
+                                        <strong>Sair</strong>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <h1 class="subtitle is-1">Aqui estão suas avaliações: </h1>
+
+                {review.length > 0 ?
+                    review.map((review) => {
+                        return (
+                            <div key={review.imdbID}>
+                                {review.imdbID}
+                                {review.comment}
+                                <button onClick={() => { delReview(review.imdbID) }} >
+                                    Excluir comentário
+                                </button>
+                            </div>
+                        )
+                    })
+                    :
+                    <p>Você não possui reviews</p>
+                }
+            </div>
         </>
     );
 }

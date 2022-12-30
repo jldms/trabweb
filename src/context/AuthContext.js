@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }) => {
   const delReview = async (id) => {
     try {
         await apiAuthenticated
-            .delete(`/favorites/${id}`)
+            .delete(`/reviews/${id}`)
                 .then((response) => {
                     console.log(response)
                 });
