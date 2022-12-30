@@ -7,6 +7,7 @@ import Signup from './pages/SignUp';
 import Home from './pages/Home';
 import Review from './pages/Review';
 import DetailReview from './pages/DetailReview';
+import SetReview from './pages/SetReview';
 import Favorite from './pages/Favorite';
 import PrivateRoutes from './utils/PrivateRoutes';
 
@@ -27,6 +28,7 @@ function App() {
             <Route element={<Review />} path="/review" />
             <Route element={<DetailReview />} path="/detailreview" />
             <Route element={<Favorite />} path="/favorite" />
+            <Route element={<SetReview />} path="/setreview" />
           </Route>
         </Routes>
 

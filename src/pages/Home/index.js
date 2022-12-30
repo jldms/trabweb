@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { apiAuthenticated } from '../../services/api';
-import { baseURL_text, baseURL_image } from '../../services/api_omdb';
+import { baseURL_text } from '../../services/api_omdb';
 
 const Home = () => {
 
@@ -52,21 +52,7 @@ const Home = () => {
     }
   }
 
-  const addReview = async (imdbID, text, stars) => {
-    try {
-      await apiAuthenticated
-        .post(`/reviews/${imdbID}`, {
-          comment: text,
-          stars: stars
-        })
-        .then((response) => {
-          console.log(response)
-        });
-    }
-    catch (error) {
-      console.log(error.response.status);
-    }
-  }
+ 
 
   useEffect(() => {
     handleSearch()
@@ -143,9 +129,9 @@ const Home = () => {
 
 
                 <footer class="card-footer">
-                  <a href="#" class="card-footer-item" onClick={() => { addFavorite(movie.imdbID) }}>Adicionar aos favoritos</a>
-                  <a href="#" class="card-footer-item" onClick={() => { addReview(movie.imdbID) }}>Fazer review</a>
-                  <a href="#" class="card-footer-item" onClick={() => { navigate('/detailreview') }}>Ver review</a>
+                  <a class="card-footer-item" onClick={() => { addFavorite(movie.imdbID) }}>Adicionar aos favoritos</a>
+                  <a class="card-footer-item" onClick={() => { navigate('/setreview', {state:{id: movie.imdbID}}) }}>Fazer avaliação</a>
+                  <a class="card-footer-item" onClick={() => { navigate('/detailreview',{state:{id: movie.imdbID}}) }}>Ver avaliações</a>
 
                 </footer>
               </div>
