@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import AuthContext from '../../context/AuthContext';
 
 import { useNavigate } from 'react-router-dom';
@@ -7,40 +7,58 @@ import { apiAuthenticated } from '../../services/api';
 
 const Review = () => {
 
-  const {  logout} = useContext(AuthContext);
+    const { logout, delReview } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+    const [review, setReview] = useState([])
 
-  useEffect(() => {
-    const getMyReview = async () => {
+    const navigate = useNavigate();
 
-        try {
-          await apiAuthenticated
-            .get('/reviews/my')
-            .then((response) => {
-              console.log(response);
-            });
-        }
-        catch (error) {
-          console.log(error.response.status);
-        }
-      };
-      getMyReview();
-  }, []);
-  
-  return (
-    <>
-      <p>reviews</p>
+    useEffect(() => {
+        const getMyReview = async () => {
 
-      <button onClick={() => { logout()} } >
-        logout
-      </button>
+            try {
+                await apiAuthenticated
+                    .get('/reviews/my')
+                    .then((response) => {
+                        console.log(response);
+                        setReview(response.data.reviews)
+                    });
+            }
+            catch (error) {
+                console.log(error.response.status);
+            }
+        };
+        getMyReview();
+    }, []);
 
-      <button onClick={() => { navigate('/')} } >
-        voltar
-      </button>
-    </>
-  );
+    return (
+        <>
+            <p>Tela de reviews</p>
+
+            <button onClick={() => { logout() }} >
+                logout
+            </button>
+
+            <button onClick={() => { navigate('/') }} >
+                voltar
+            </button>
+
+            {review.length > 0 ?
+                review.map((review) => {
+                    return (
+                        <div key={review.imdbID}>
+                            {review.imdbID}
+                            <button onClick={() => { delReview(review.imdbID) }} >
+                                remover dos favoritos
+                            </button>
+                        </div>
+                    )
+                })
+                :
+                <p>você não possui reviews</p>
+            }
+        </>
+    );
 }
 
 export default Review;

@@ -38,7 +38,7 @@ const Home = () => {
     try {
       await apiAuthenticated
         .post('/favorites', {
-          imdbID: id,          
+          imdbID: id,
         })
         .then((response) => {
           console.log(response)
@@ -55,23 +55,6 @@ const Home = () => {
 
   return (
     <>
-      <p>
-        Home
-      </p>
-
-      <button onClick={() => { logout() }} >
-        logout
-      </button>
-
-
-      <button onClick={() => { navigate('/review') }} >
-        review
-      </button>
-
-      <button onClick={() => { navigate('/favorite') }} >
-        favoritos
-      </button>
-
       <form>
         <label>digite um filme:
           <input type="text" placeholder="Digite um filme aqui" onChange={(e) => { setSearch(e.target.value) }} />
@@ -84,24 +67,61 @@ const Home = () => {
 
       {movies.map((movie) => {
         return (
-          
-            <div  key={movie.imdbID}>
-              {movie.Title}
-              <button onClick={() => { addFavorite(movie.imdbID) }} >
+
+          <div key={movie.imdbID}>
+            {movie.Title}
+            <button onClick={() => { addFavorite(movie.imdbID) }} >
               favoritar
-              </button>
-            
-            </div>
-            
-            
+            </button>
+
+          </div>
+
+
         )
-        })
+      })
       }
 
       <button onClick={() => { setPage(page + 1) }} >
         proximo
       </button>
 
+      <div className="container is-widescreen">
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+
+          <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+              <a class="navbar-item" onClick={() => { navigate('/') }}>
+                Início
+              </a>
+
+              <a class="navbar-item" onClick={() => { navigate('/review') }}>
+                Review
+              </a>
+
+              <a class="navbar-item" onClick={() => { navigate('/favorite') }}>
+                Favoritos
+              </a>
+
+
+            </div>
+
+            <div class="navbar-end">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-primary" onClick={() => { logout() }}>
+                    <strong>Sair</strong>
+                  </a>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <h1 class="title is-3">Buscar Filme:</h1>
+
+        <input class="input is-primary" type="text" placeholder="Digite aqui um filme"></input>
+      </div>
     </>
 
 

@@ -82,8 +82,21 @@ export const AuthProvider = ({ children }) => {
 
   }
 
+  const delReview = async (id) => {
+    try {
+        await apiAuthenticated
+            .delete(`/favorites/${id}`)
+                .then((response) => {
+                    console.log(response)
+                });
+    }
+    catch (error) {
+        console.log(error.response.status);
+    }
+}
+
   return (
-    <AuthContext.Provider value={{ isLogged, login, register, about, logout, setIsLogged }}>
+    <AuthContext.Provider value={{ isLogged, login, register, about, logout, setIsLogged, delReview }}>
       {children}
     </AuthContext.Provider>
   );
