@@ -9,7 +9,8 @@ const api = axios.create({
 const apiAuthenticated = axios.create({
     baseURL,
     headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDIsImlhdCI6MTY3MjI4NTIxNiwiZXhwIjoxNzAzODIxMjE2fQ.H3OlMYyB3zKV4HvdjWQyLnqMXelDpkkau4nEkfpJeqs`,
+        Authorization: `Bearer ${localStorage.getItem('@trabweb:access')}`
     },
 })
+
 export { api, apiAuthenticated } 

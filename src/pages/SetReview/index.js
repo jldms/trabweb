@@ -44,7 +44,6 @@ const SetReview = () => {
 
     useEffect(() => {
         const getMovie = async (omdbID) => {
-            console.log(omdbID);
             try {
                 await axios
                     .get(`${baseURL_text}i=${omdbID}`)

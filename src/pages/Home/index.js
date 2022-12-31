@@ -60,14 +60,6 @@ const Home = () => {
 
   return (
     <>
-
-
-
-
-      <button onClick={() => { setPage(page + 1) }} >
-        proximo
-      </button>
-
       <div className="container is-widescreen">
         <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
 
@@ -78,7 +70,7 @@ const Home = () => {
               </a>
 
               <a class="navbar-item" onClick={() => { navigate('/review') }}>
-                Review
+                Meus reviews
               </a>
 
               <a class="navbar-item" onClick={() => { navigate('/favorite') }}>

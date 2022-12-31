@@ -84,7 +84,7 @@ const DetailReview = () => {
                 {detail.length > 0 ?
                     detail.map((detail, index) => {
                         return (
-                            <div class="box">
+                            <div class="box" key={index}>
                                 {detail.comment}
                             </div>
                         )

@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../../context/AuthContext';
+import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 
 import { apiAuthenticated } from '../../services/api';
+import { baseURL_text } from '../../services/api_omdb';
 
 const Favorite = () => {
 
@@ -13,6 +15,8 @@ const Favorite = () => {
 
     const navigate = useNavigate();
 
+    const res = [];
+
     useEffect(() => {
         const getFavorites = async () => {
 
@@ -20,7 +24,7 @@ const Favorite = () => {
                 await apiAuthenticated
                     .get('/favorites')
                     .then((response) => {
-                        console.log(response.data.favorites);
+                        
                         setFavorites(response.data.favorites)
                     });
             }
@@ -28,16 +32,39 @@ const Favorite = () => {
                 console.log(error.response.status);
             }
         };
+
+        
         getFavorites();
+
+        
+
+        
+
     }, []);
 
+    const getMovie = async (id) => {
+
+        try {
+            await axios
+                .get(`${baseURL_text}i=${id}`)
+                .then((response) => {
+                    return(response.data.Title)
+                });
+        }
+        catch (error) {
+            console.log(error.response.status);
+        }
+
+    }
+
+    
     const delFavorite = async (id) => {
         try {
             await apiAuthenticated
                 .delete(`/favorites/${id}`)
-                    .then((response) => {
-                        console.log(response)
-                    });
+                .then((response) => {
+                    console.log(response)
+                });
         }
         catch (error) {
             console.log(error.response.status);
@@ -46,32 +73,53 @@ const Favorite = () => {
 
     return (
         <>
-            <p>Página dos Favoritos</p>
 
-            <button onClick={() => { logout() }} >
-                logout
-            </button>
+            <div className="container is-widescreen">
 
-            <button onClick={() => { navigate('/') }} >
-                voltar
-            </button>
+                <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
 
-            <p>meus favoritos:</p>
+                    <div id="navbarBasicExample" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" onClick={() => { navigate('/') }}>
+                                Voltar
+                            </a>
 
-            {favorites.length > 0 ?
-                favorites.map((favorite) => {
-                    return (
-                        <div key={favorite.imdbID}>
-                            {favorite.imdbID}
-                            <button onClick={() => { delFavorite(favorite.imdbID) }} >
-                                remover dos favoritos
-                            </button>
                         </div>
-                    )
-                })
-                :
-                <p>não há favoritos</p>
-            }
+
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a class="button is-primary" onClick={() => { logout() }}>
+                                        <strong>Sair</strong>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <h1 class="subtitle is-1">Aqui estão seus filmes favoritos: </h1>
+
+                {favorites.length > 0 ?
+                    favorites.map((favorite, index) => {
+                        
+                        return (
+                            <div key={index}>
+                                {favorite.imdbID}
+                                
+                                <button onClick={() => { delFavorite(favorite.imdbID) }} >
+                                    remover dos favoritos
+                                </button>
+                            </div>
+                        )
+                    })
+                    :
+                    <p>não há favoritos</p>
+                }
+
+
+
+            </div>
         </>
     );
 }
