@@ -76,7 +76,7 @@ const Review = () => {
                         )
                     })
                     :
-                    <p>Você não possui reviews</p>
+                    <p>Você não possui avaliações</p>
                 }
             </div>
         </>

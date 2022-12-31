@@ -84,14 +84,23 @@ const DetailReview = () => {
                 {detail.length > 0 ?
                     detail.map((detail, index) => {
                         return (
-                            <div class="box" key={index}>
-                                {detail.comment}
+                            <div class="card " key={index}  >
+                                <div class="card-content">
+                                    <p class="title">
+                                        “{detail.comment}”
+                                    </p>
+                                    <p class="subtitle">
+                                        {detail.user.name}
+                                    </p>
+                                </div>
                             </div>
                         )
                     })
                     :
                     <p> não há reviews para este filme</p>
                 }
+
+
             </div>
         </>
     );
